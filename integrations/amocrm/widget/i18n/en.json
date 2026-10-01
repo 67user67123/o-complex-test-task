@@ -1,0 +1,21 @@
+{
+  "widget": {
+    "name": "Manager assistant",
+    "short_description": "Customer reply and an upsell suggestion",
+    "description": "<p>Open the assistant in a lead card and paste the customer request and relevant conversation. The service prepares a customer reply and a separate suggestion for the manager.</p><p>The assistant can also open in a new tab. Copy the conversation manually and review the reply before sending it.</p>",
+    "tour_description": "Open the assistant → paste the conversation → review both result blocks."
+  },
+  "settings": {
+    "service_url": "Assistant HTTPS URL (no keys or query parameters)"
+  },
+  "ui": {
+    "intro": "Prepare a polite customer reply and a relevant additional offer.",
+    "steps": "Copy the customer request and relevant conversation messages. Paste them into the assistant, then review the result.",
+    "open_inline": "Open in lead card",
+    "frame_title": "Manager assistant: customer reply and upsell",
+    "open": "Open in new tab ↗",
+    "new_tab": "If the embedded view does not load, open the assistant in a new tab. The manager sends the reply.",
+    "invalid_url": "Set a valid assistant HTTPS URL in the integration settings. Do not include credentials, query parameters or a fragment.",
+    "settings_help": "Example: https://assistant.example.com/. Use the interface URL, not /suggest or Ollama. Enter the access key in the assistant itself."
+  }
+}

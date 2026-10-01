@@ -1,0 +1,71 @@
+# Python environments, caches and build output
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+build/
+dist/
+*.egg-info/
+
+# Local settings and credentials; keep the documented template
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated vector index and runtime files
+/data/chroma/
+/logs/
+*.log
+*.pid
+*.sqlite
+*.sqlite3
+*.db
+
+# Downloaded executables and model weights
+/tools/
+/models/
+*.exe
+*.dll
+*.download
+*.onnx
+*.gguf
+*.safetensors
+*.pt
+*.pth
+
+# Generated widget packages; keep integrations/amocrm/widget source files
+/integrations/amocrm/widget.zip
+/integrations/amocrm/dist/
+*.zip
+*.7z
+*.tar
+*.gz
+
+# Video production sources and exported media
+/video/
+*.mp4
+*.webm
+*.mov
+*.avi
+*.wav
+*.mp3
+*.m4a
+*.srt
+
+# Local editor and operating system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.bak

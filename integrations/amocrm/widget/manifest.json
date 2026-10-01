@@ -1,0 +1,31 @@
+{
+  "widget": {
+    "name": "widget.name",
+    "description": "widget.description",
+    "short_description": "widget.short_description",
+    "version": "1.0.0",
+    "interface_version": 2,
+    "init_once": false,
+    "locale": ["ru", "en"],
+    "installation": true,
+    "support": {
+      "email": "support@example.invalid"
+    }
+  },
+  "locations": ["lcard-1", "settings"],
+  "tour": {
+    "is_tour": true,
+    "tour_images": {
+      "ru": ["/images/tour_ru.png"],
+      "en": ["/images/tour_en.png"]
+    },
+    "tour_description": "widget.tour_description"
+  },
+  "settings": {
+    "service_url": {
+      "name": "settings.service_url",
+      "type": "text",
+      "required": true
+    }
+  }
+}

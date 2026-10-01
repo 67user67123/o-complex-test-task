@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f5f7fa">
+  <title>Диалог — помощник менеджера</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Диалог, на главную">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14v10H9l-4 4V5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 9h6M9 12h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      <span>Диалог<span class="brand-caption">помощник менеджера</span></span>
+    </a>
+    <span class="local-badge"><span class="local-dot" aria-hidden="true"></span>Локальная обработка</span>
+  </header>
+
+  <main class="workspace">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Работа с обращениями</p>
+        <h1 id="page-title">Хороший ответ начинается с контекста.</h1>
+        <p class="intro-copy">Добавьте сообщение и переписку. Помощник найдет нужное в базе знаний<br class="desktop-break"> и подготовит ответ клиенту и рекомендацию для вас.</p>
+      </div>
+      <div class="workflow" aria-label="Как это работает">
+        <span>Обращение</span><span class="workflow-arrow" aria-hidden="true">→</span><span>База знаний</span><span class="workflow-arrow" aria-hidden="true">→</span><strong>Два результата</strong>
+      </div>
+    </section>
+
+    <section class="health-bar" aria-label="Состояние сервиса">
+      <details class="health-details" id="health-details">
+        <summary><span class="status-dot" id="status-dot" aria-hidden="true"></span><span id="health-label" role="status">Проверяем готовность сервиса…</span><span class="details-chevron" aria-hidden="true">⌄</span></summary>
+        <div class="health-content">
+          <p id="health-description">Проверка локальной модели и базы знаний.</p>
+          <dl class="health-models" id="health-models" hidden>
+            <div><dt>Модель ответа</dt><dd id="generation-model"></dd></div>
+            <div><dt>Модель поиска</dt><dd id="embedding-model"></dd></div>
+            <div><dt>База знаний</dt><dd id="index-state"></dd></div>
+          </dl>
+          <div class="access-settings">
+            <label for="access-key">Ключ доступа <span>если требуется для подключения</span></label>
+            <div class="access-input-row"><input id="access-key" type="password" autocomplete="off" placeholder="Введите ключ сервиса" aria-describedby="access-hint"><button class="access-button" id="apply-key" type="button">Применить</button></div>
+            <p id="access-hint">Сохраняется только до обновления страницы. При локальном запуске обычно не нужен.</p>
+          </div>
+        </div>
+      </details>
+      <button class="text-button refresh-button" id="refresh-health" type="button" title="Проверить готовность сервиса">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M15.5 7A6 6 0 1 0 16 11M15.5 3.5V7H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Обновить</span>
+      </button>
+    </section>
+
+    <div class="work-grid">
+      <section class="panel input-panel" aria-labelledby="input-title">
+        <div class="panel-heading">
+          <div><p class="step-label">01 / Контекст</p><h2 id="input-title">Обращение клиента</h2></div>
+          <span class="heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14v11H9l-4 3V5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 9h6M9 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+        </div>
+
+        <div class="examples-row">
+          <label for="example-select">Попробовать на примере</label>
+          <select id="example-select" disabled><option value="">Загружаем примеры…</option></select>
+          <p class="field-hint" id="example-notice" hidden></p>
+        </div>
+
+        <form id="suggest-form">
+          <div class="field">
+            <div class="label-row"><label for="message">Новое сообщение <span class="required-marker" aria-hidden="true">*</span></label><span class="character-count" id="message-count">0 / 6 000</span></div>
+            <textarea id="message" name="message" rows="5" maxlength="6000" required placeholder="Вставьте последнее сообщение клиента…" aria-describedby="message-hint message-count"></textarea>
+            <p class="field-hint" id="message-hint">Сообщение, на которое нужно ответить.</p>
+          </div>
+          <div class="field history-field">
+            <div class="label-row"><label for="history">История переписки</label><span class="optional-label">необязательно</span></div>
+            <textarea id="history" name="history" rows="7" maxlength="20000" placeholder="Клиент: Здравствуйте, подбираю товар.&#10;Менеджер: Добрый день! Что для вас важно?&#10;Клиент: Расскажу подробнее…" aria-describedby="history-hint"></textarea>
+            <p class="field-hint" id="history-hint">Каждую реплику начните с «Клиент:» или «Менеджер:». Здесь важны уже сделанные предложения и отказы.</p>
+          </div>
+          <div class="error-box" id="form-error" role="alert" hidden></div>
+          <div class="submit-row">
+            <button class="primary-button" id="submit-button" type="submit"><span class="button-spinner" aria-hidden="true" hidden></span><span id="submit-label">Подготовить ответ</span><svg class="submit-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <span class="keyboard-hint">Ctrl + Enter</span>
+          </div>
+          <p class="loading-note" id="loading-note" role="status" hidden>Ищем сведения и готовим ответ. Первый запуск модели может занять больше времени.</p>
+        </form>
+      </section>
+
+      <section class="results-panel" id="results-panel" aria-labelledby="results-title" aria-busy="false">
+        <div class="result-heading"><div><p class="step-label">02 / Результат</p><h2 id="results-title">Готово к разговору</h2></div><span class="result-time" id="result-time" hidden></span></div>
+        <p class="stale-notice" id="stale-notice" role="status" hidden>Обращение изменилось. Подготовьте новый ответ с учетом изменений.</p>
+
+        <article class="result-card reply-card" aria-labelledby="reply-title">
+          <div class="result-card-heading"><div class="card-title"><span class="card-icon reply-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="M4 4h12v9H8l-4 3V4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><h3 id="reply-title">Ответ клиенту</h3></div><span class="small-label">Можно редактировать</span></div>
+          <div class="empty-result" id="reply-placeholder"><p>Здесь появится ответ на обращение</p><span>С учетом переписки и найденных сведений из базы.</span></div>
+          <label class="sr-only" for="client-reply">Текст ответа клиенту, доступный для редактирования</label>
+          <textarea class="reply-text" id="client-reply" rows="8" hidden></textarea>
+          <div class="reply-footer"><span id="reply-note">Проверьте текст перед отправкой</span><button class="copy-button" type="button" id="copy-button" disabled><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="6.5" y="6.5" width="9" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M12.5 6V3.5h-9v10H6" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg><span id="copy-label">Скопировать</span></button></div>
+          <p class="sr-only" id="copy-status" role="status"></p>
+        </article>
+
+        <article class="result-card tip-card" aria-labelledby="tip-title">
+          <div class="result-card-heading"><div class="card-title"><span class="card-icon tip-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="M7 13c0-2-2-2.5-2-5a5 5 0 1 1 10 0c0 2.5-2 3-2 5H7ZM7.5 16h5M8.5 18h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3 id="tip-title">Подсказка менеджеру</h3></div><span class="internal-badge">Только для вас</span></div>
+          <div class="empty-result" id="tip-placeholder"><p>Следующий шаг для менеджера</p><span>Уместная допродажа, ее польза и способ предложить.</span></div>
+          <div class="tip-text" id="manager-tip" hidden></div>
+          <p class="tip-footnote">Учитывает предыдущие предложения и отказы клиента.</p>
+        </article>
+
+        <details class="sources-details" id="sources-details" hidden>
+          <summary><span id="sources-summary">Источники ответа</span><span class="details-chevron" aria-hidden="true">⌄</span></summary>
+          <p class="sources-intro">Фрагменты базы знаний, найденные для этого обращения.</p>
+          <ul id="sources-list"></ul>
+          <p class="timing-details" id="timing-details"></p>
+        </details>
+      </section>
+    </div>
+
+    <footer class="workspace-footer"><span>Подготовка ответа остается под вашим контролем.</span><span>Сообщения не отправляются клиенту автоматически.</span></footer>
+  </main>
+</body>
+</html>
